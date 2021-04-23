@@ -1,19 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FirstBankOfSuncoast
 {
     class Transaction
     {
-        // AcctType {get; set;}
+
         public string AccountType { get; set; }
 
-        // Balance {get; set;}
-        public string Balance { get; set; }
+        public string TransactionType { get; set; }
 
-        // saving {get; set;}
-        public string SavingAccount { get; set; }
-        // checking acct
-        public string CheckingAccount { get; set; }
+        public int TransactionAmount { get; set; }
+
     }
     class Program
     {
@@ -30,7 +29,7 @@ namespace FirstBankOfSuncoast
             // write prompt
             Console.WriteLine(prompt);
             // read line and set it as the userInput
-            var userInput = Console.ReadLine();
+            var userInput = Console.ReadLine().ToUpper();
             // - return response
             return userInput;
         }
@@ -49,38 +48,118 @@ namespace FirstBankOfSuncoast
             else
             {
                 Console.WriteLine("Invalid numbers default to 0");
+                // - return response
                 return 0;
             }
 
-            // - return response
         }
-
-
         // load past transactions from a file when it first starts.....save for last
+
+
         static void Main(string[] args)
         {
 
             // display welcome banner
             DisplayWelcome();
 
+            var tranactions = new List<Transaction>();
 
 
 
 
+            var keepGoing = true;
+
+            while (keepGoing)
+            {
+                // create bool statement to determine is prog can cont
+
+                // create a menu
+                // "Please select from the followring: [D]eposit. [W]ithdraw. [V]eiw. [Q]uit.
+                Console.WriteLine("");
+                Console.WriteLine("Menu options: [D]eposite. [W]ithdraw. [V]iew. [Q]uit.");
+
+                var answer = Console.ReadLine().ToUpper();
+
+                // if input = Q
+                if (answer == "Q")
+                // bool = false
+                {
+                    keepGoing = false;
+                }
+                // if input = V
+                else if (answer == "V")
+                {
+                    foreach (var tran in tranactions)
+                    {
+                        // console.writeline("{name} has a balance of {balance}")
+                        Console.WriteLine($"{tran.AccountType}: {tran.TransactionType} ${tran.TransactionAmount}");
+                    }
+                }
+                else if (answer == "D")
+                {
+                    var tran = new Transaction();
+
+                    var acctToUpdate = PromptForString("[C]hecking or [S]avings?");
+
+                    // Transaction foundAcctToUpdate = tranactions.FirstOrDefault(tran => tran.AccountType == acctToUpdate);
+
+                    if (acctToUpdate == null)
+                    {
+                        Console.WriteLine("Please select either [C]hecking or [S]avings");
+                    }
+                    else
+                    {
+                        if (acctToUpdate == "C")
+                        {
+                            tran.AccountType = "checking";
+                            tran.TransactionType = "deposit";
+                            tran.TransactionAmount = PromptForInterger("How much do you want to deposit?");
+                            tranactions.Add(tran);
+                        }
+                        else if (acctToUpdate == "S")
+                        {
+                            tran.AccountType = "savings";
+                            tran.TransactionType = "deposit";
+                            tran.TransactionAmount = PromptForInterger("How much do you want to deposit?");
+                            tranactions.Add(tran);
+                        }
+                    }
+
+                }
+                else if (answer == "W")
+                {
+                    var tran = new Transaction();
+
+                    var acctToUpdate = PromptForString("[C]hecking or [S]avings?");
+
+                    if (acctToUpdate == null)
+                    {
+                        Console.WriteLine("Please select either [C]hecking or [S]avings");
+                    }
+                    else
+                    {
+                        if (acctToUpdate == "C")
+                        {
+                            tran.AccountType = "checking";
+                            tran.TransactionType = "withdraw";
+                            tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
+                            tranactions.Add(tran);
+                        }
+                        else if (acctToUpdate == "S")
+                        {
+                            tran.AccountType = "savings";
+                            tran.TransactionType = "withdraw";
+                            tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
+                            tranactions.Add(tran);
+                        }
+                    }
+
+                }
+
+            }
 
 
 
-            // prompt "Which acct would you like to update?: [C]hecking or [S]avings"
-            // prompt "Specified amount $:?"
-
-            // create new balance list to hold the values of the balance for checking and saving acct
-            // -add the collection of values to the list 
-
-            // create a menu
-            // "Please select from the followring: [D]eposit. [W]ithdraw. [V]eiw. [Q]uit.
-
-            // if input = V
-            // console.writeline("{name} has a balance of {balance}")
 
             // else if = D
             //   var acctDeposit = prompt for string "Which acct do you want to update?"
@@ -108,15 +187,21 @@ namespace FirstBankOfSuncoast
 
 
 
-            // else input = Q
-            // bool = false
-
             // The application should, after each transaction, write all the transactions to a file.
             // This is the same file the application loads.......save for last
 
 
 
 
+
         }
+
+
+
+
+
+
+
     }
 }
+
