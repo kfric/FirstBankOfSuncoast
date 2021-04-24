@@ -13,6 +13,19 @@ namespace FirstBankOfSuncoast
 
         public int TransactionAmount { get; set; }
 
+        // not sure if using methods to calculate totals of check>deposit>amt, check>withdraw>amt, saving>deposit>amt, saving>withdraw>amt.....
+
+        public int CalculateCheckingBalance()
+        {
+            var allTransactions = new List<Transaction>();
+
+            var allCheckingTransactions = allTransactions.Where(acct => acct.AccountType == "checking");
+            var allDeposits = allCheckingTransactions.Where(type => type.TransactionType == "deposit");
+            var totalCheckingDeposit = allDeposits.Select(x => x.TransactionAmount).Sum();
+
+            return totalCheckingDeposit;
+        }
+
     }
     class Program
     {
@@ -62,7 +75,7 @@ namespace FirstBankOfSuncoast
             // display welcome banner
             DisplayWelcome();
 
-            var tranactions = new List<Transaction>();
+            var transactions = new List<Transaction>();
 
 
 
@@ -89,10 +102,12 @@ namespace FirstBankOfSuncoast
                 // if input = V
                 else if (answer == "V")
                 {
-                    foreach (var tran in tranactions)
+                    foreach (var tran in transactions)
                     {
                         // console.writeline("{name} has a balance of {balance}")
                         Console.WriteLine($"{tran.AccountType}: {tran.TransactionType} ${tran.TransactionAmount}");
+                        Console.WriteLine("---------------------------------------------------------------------");
+                        Console.WriteLine($"Checking acct total: ${tran.CalculateCheckingBalance()}");
                     }
                 }
                 else if (answer == "D")
@@ -114,14 +129,18 @@ namespace FirstBankOfSuncoast
                             tran.AccountType = "checking";
                             tran.TransactionType = "deposit";
                             tran.TransactionAmount = PromptForInterger("How much do you want to deposit?");
-                            tranactions.Add(tran);
+                            transactions.Add(tran);
+
+
                         }
                         else if (acctToUpdate == "S")
                         {
                             tran.AccountType = "savings";
                             tran.TransactionType = "deposit";
                             tran.TransactionAmount = PromptForInterger("How much do you want to deposit?");
-                            tranactions.Add(tran);
+                            transactions.Add(tran);
+
+
                         }
                     }
 
@@ -143,14 +162,17 @@ namespace FirstBankOfSuncoast
                             tran.AccountType = "checking";
                             tran.TransactionType = "withdraw";
                             tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
-                            tranactions.Add(tran);
+                            transactions.Add(tran);
+
+
                         }
                         else if (acctToUpdate == "S")
                         {
                             tran.AccountType = "savings";
                             tran.TransactionType = "withdraw";
                             tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
-                            tranactions.Add(tran);
+                            transactions.Add(tran);
+
                         }
                     }
 
