@@ -15,20 +15,22 @@ namespace FirstBankOfSuncoast
 
         // not sure if using methods to calculate totals of check>deposit>amt, check>withdraw>amt, saving>deposit>amt, saving>withdraw>amt.....
 
-        public int CalculateCheckingBalance()
-        {
-            var allTransactions = new List<Transaction>();
-
-            var allCheckingTransactions = allTransactions.Where(acct => acct.AccountType == "checking");
-            var allDeposits = allCheckingTransactions.Where(type => type.TransactionType == "deposit");
-            var totalCheckingDeposit = allDeposits.Select(x => x.TransactionAmount).Sum();
-
-            return totalCheckingDeposit;
-        }
 
     }
     class Program
     {
+        static int CalculateBalance(List<Transaction> allTransactions, string acctType)
+        {
+
+            var allTransactionAmounts = allTransactions.Where(acct => acct.AccountType == acctType);
+            var allDeposits = allTransactionAmounts.Where(type => type.TransactionType == "deposit").Sum(x => x.TransactionAmount);
+            var allWithdraws = allTransactionAmounts.Where(type => type.TransactionType == "withdraw").Sum(x => x.TransactionAmount);
+
+            var totalBalance = (allDeposits - allWithdraws);
+
+
+            return totalBalance;
+        }
         static void DisplayWelcome()
         {
             Console.WriteLine("-----------------------------------------");
@@ -102,13 +104,8 @@ namespace FirstBankOfSuncoast
                 // if input = V
                 else if (answer == "V")
                 {
-                    foreach (var tran in transactions)
-                    {
-                        // console.writeline("{name} has a balance of {balance}")
-                        Console.WriteLine($"{tran.AccountType}: {tran.TransactionType} ${tran.TransactionAmount}");
-                        Console.WriteLine("---------------------------------------------------------------------");
-                        Console.WriteLine($"Checking acct total: ${tran.CalculateCheckingBalance()}");
-                    }
+                    Console.WriteLine($"Checking acct total: ${CalculateBalance(transactions, "checking")}");
+                    Console.WriteLine($"Savings acct total: ${CalculateBalance(transactions, "savings")}");
                 }
                 else if (answer == "D")
                 {
