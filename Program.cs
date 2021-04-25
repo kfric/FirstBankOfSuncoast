@@ -136,8 +136,6 @@ namespace FirstBankOfSuncoast
                             tran.TransactionType = "deposit";
                             tran.TransactionAmount = PromptForInterger("How much do you want to deposit?");
                             transactions.Add(tran);
-
-
                         }
                     }
 
@@ -159,8 +157,16 @@ namespace FirstBankOfSuncoast
                             tran.AccountType = "checking";
                             tran.TransactionType = "withdraw";
                             tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
-                            transactions.Add(tran);
 
+                            // create if statement so that the user cannot withdraw more than what is in the acct
+                            if (CalculateBalance(transactions, "checking") < tran.TransactionAmount)
+                            {
+                                Console.WriteLine("Insufficient funds");
+                            }
+                            else
+                            {
+                                transactions.Add(tran);
+                            }
 
                         }
                         else if (acctToUpdate == "S")
@@ -168,8 +174,16 @@ namespace FirstBankOfSuncoast
                             tran.AccountType = "savings";
                             tran.TransactionType = "withdraw";
                             tran.TransactionAmount = PromptForInterger("How much do you want to withdraw?");
-                            transactions.Add(tran);
 
+                            if (CalculateBalance(transactions, "savings") < tran.TransactionAmount)
+                            {
+                                Console.WriteLine("Insufficient Funds");
+                            }
+                            else
+                            {
+                                transactions.Add(tran);
+
+                            }
                         }
                     }
 
