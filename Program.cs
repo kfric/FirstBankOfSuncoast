@@ -6,15 +6,11 @@ namespace FirstBankOfSuncoast
 {
     class Transaction
     {
-
         public string AccountType { get; set; }
 
         public string TransactionType { get; set; }
 
         public int TransactionAmount { get; set; }
-
-        // not sure if using methods to calculate totals of check>deposit>amt, check>withdraw>amt, saving>deposit>amt, saving>withdraw>amt.....
-
 
     }
     class Program
@@ -27,7 +23,6 @@ namespace FirstBankOfSuncoast
             var allWithdraws = allTransactionAmounts.Where(type => type.TransactionType == "withdraw").Sum(x => x.TransactionAmount);
 
             var totalBalance = (allDeposits - allWithdraws);
-
 
             return totalBalance;
         }
@@ -48,7 +43,6 @@ namespace FirstBankOfSuncoast
             // - return response
             return userInput;
         }
-
         static int PromptForInterger(string prompt)
         {
             // method to prompt for int response
@@ -66,21 +60,15 @@ namespace FirstBankOfSuncoast
                 // - return response
                 return 0;
             }
-
         }
         // load past transactions from a file when it first starts.....save for last
 
-
         static void Main(string[] args)
         {
-
             // display welcome banner
             DisplayWelcome();
 
             var transactions = new List<Transaction>();
-
-
-
 
             var keepGoing = true;
 
@@ -97,12 +85,9 @@ namespace FirstBankOfSuncoast
 
                 switch (answer)
                 {
-
-
                     // if input = Q
                     case "Q":
                         // bool = false
-
                         keepGoing = false;
                         break;
                     // if input = V
@@ -119,7 +104,6 @@ namespace FirstBankOfSuncoast
                         var acctToDeposit = PromptForString("[C]hecking or [S]avings?");
 
                         // Transaction foundAcctToUpdate = tranactions.FirstOrDefault(tran => tran.AccountType == acctToUpdate);
-
                         if (acctToDeposit == null)
                         {
                             Console.WriteLine("Please select either [C]hecking or [S]avings");
@@ -143,8 +127,8 @@ namespace FirstBankOfSuncoast
                                 transactions.Add(tran);
                             }
                         }
-
                         break;
+
                     case "W":
 
                         var withdrawTran = new Transaction();
@@ -191,7 +175,6 @@ namespace FirstBankOfSuncoast
                             }
                         }
                         break;
-
                 }
 
             }
