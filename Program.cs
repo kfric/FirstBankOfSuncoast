@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
@@ -79,7 +82,7 @@ namespace FirstBankOfSuncoast
                 // create a menu
                 // "Please select from the followring: [D]eposit. [W]ithdraw. [V]eiw. [Q]uit.
                 Console.WriteLine("");
-                Console.WriteLine("Menu options: [D]eposite. [W]ithdraw. [V]iew. [Q]uit.");
+                Console.WriteLine("Menu options: [D]eposit. [W]ithdraw. [V]iew. [Q]uit.");
 
                 var answer = Console.ReadLine().ToUpper();
 
@@ -178,6 +181,12 @@ namespace FirstBankOfSuncoast
                 }
 
             }
+            // create a stream for writing info into a file
+            var fileWriter = new StreamWriter("FirstBankOfSuncoast.csv");
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+            // write and record the list of transactions
+            csvWriter.WriteRecords(transactions);
+            fileWriter.Close();
         }
 
     }
