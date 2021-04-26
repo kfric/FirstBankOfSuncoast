@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace FirstBankOfSuncoast
 {
@@ -70,11 +71,27 @@ namespace FirstBankOfSuncoast
         {
             // display welcome banner
             DisplayWelcome();
-
+            // create an empty list of transactions
             var transactions = new List<Transaction>();
 
-            var keepGoing = true;
+            // if there is a file, use StreamReader + CsvReader to replace the contents of the list
+            if (File.Exists("FirstBankOfSuncoast.csv"))
+            {
+                // create a stream for reading info from a file
+                var fileReader = new StreamReader("FirstBankOfSuncoast.csv");
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = false,
+                };
+                var csvReader = new CsvReader(fileReader, config);
 
+                // read rows from the stream. each row is an int. give back a List (List<Transaction>)
+                transactions = csvReader.GetRecords<Transaction>().ToList();
+            }
+
+
+
+            var keepGoing = true;
             while (keepGoing)
             {
                 // create bool statement to determine is prog can cont
@@ -159,7 +176,6 @@ namespace FirstBankOfSuncoast
                                 {
                                     transactions.Add(withdrawTran);
                                 }
-
                             }
                             else if (acctToWithdraw == "S")
                             {
@@ -179,7 +195,6 @@ namespace FirstBankOfSuncoast
                         }
                         break;
                 }
-
             }
             // create a stream for writing info into a file
             var fileWriter = new StreamWriter("FirstBankOfSuncoast.csv");
@@ -188,7 +203,6 @@ namespace FirstBankOfSuncoast
             csvWriter.WriteRecords(transactions);
             fileWriter.Close();
         }
-
     }
 }
 
