@@ -81,14 +81,13 @@ namespace FirstBankOfSuncoast
                 var fileReader = new StreamReader("FirstBankOfSuncoast.csv");
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    HasHeaderRecord = false,
+                    HasHeaderRecord = true,
                 };
                 var csvReader = new CsvReader(fileReader, config);
 
                 // read rows from the stream. each row is an int. give back a List (List<Transaction>)
                 transactions = csvReader.GetRecords<Transaction>().ToList();
             }
-
 
 
             var keepGoing = true;
@@ -205,4 +204,3 @@ namespace FirstBankOfSuncoast
         }
     }
 }
-
