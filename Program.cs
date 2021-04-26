@@ -8,15 +8,18 @@ using CsvHelper.Configuration;
 
 namespace FirstBankOfSuncoast
 {
+
+    // create class Transaction
     class Transaction
     {
+        // account type (string): checking or savings
         public string AccountType { get; set; }
-
+        // transaction type (string): deposit or withdraw
         public string TransactionType { get; set; }
-
+        // transactiona amount (int): 
         public int TransactionAmount { get; set; }
-
     }
+
     class Program
     {
         static int CalculateBalance(List<Transaction> allTransactions, string acctType)
@@ -98,7 +101,7 @@ namespace FirstBankOfSuncoast
                 // create a menu
                 // "Please select from the followring: [D]eposit. [W]ithdraw. [V]eiw. [Q]uit.
                 Console.WriteLine("");
-                Console.WriteLine("Menu options: [D]eposit. [W]ithdraw. [V]iew. [Q]uit.");
+                Console.WriteLine("Menu options: [D]eposit. [W]ithdraw. [V]iew. [H]istory. [Q]uit.");
 
                 var answer = Console.ReadLine().ToUpper();
 
@@ -108,6 +111,19 @@ namespace FirstBankOfSuncoast
                     case "Q":
                         // bool = false
                         keepGoing = false;
+                        break;
+
+                    case "H":
+                        var checkingTransactions = transactions.Where(transactions => transactions.AccountType == "checking");
+                        foreach (var x in checkingTransactions)
+                        {
+                            Console.WriteLine($"{x.AccountType}, {x.TransactionType}: ${x.TransactionAmount}");
+                        }
+                        var savingsTransactions = transactions.Where(transactions => transactions.AccountType == "savings");
+                        foreach (var x in savingsTransactions)
+                        {
+                            Console.WriteLine($"{x.AccountType}, {x.TransactionType}: ${x.TransactionAmount}");
+                        }
                         break;
                     // if input = V
                     case "V":
